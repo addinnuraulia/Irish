@@ -16,12 +16,12 @@
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            /* Hapus batasan tinggi agar halaman bisa digulir */
+            height: 100vh;
         }
         
         .website-container {
             width: 100%;
-            min-height: 100vh; /* Gunakan min-height agar konten bisa melebihi tinggi layar */
+            min-height: 100vh;
             background: white;
             position: relative;
             animation: fadeIn 1s ease-in;
@@ -159,13 +159,13 @@
         .profile-card:nth-child(10) .profile-image { background-image: url('https://images.pexels.com/photos/15591029/pexels-photo-15591029.jpeg'); }
         .profile-card:nth-child(11) .profile-image { background-image: url('https://images.pexels.com/photos/4027862/pexels-photo-4027862.jpeg'); }
         .profile-card:nth-child(12) .profile-image { background-image: url('https://images.pexels.com/photos/10518525/pexels-photo-10518525.jpeg'); }
-
-        /* Melissa Viper's special card */
+        
+        /* Melissa Viper's special card kini disamakan dengan kartu profil lainnya */
         .melissa-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: 3px solid #f39c12;
-            animation: specialGlow 3s ease-in-out infinite alternate;
+            /* Menghapus gaya yang mencolok */
+            background: white; 
+            border: none;
+            animation: none;
         }
         
         .melissa-card .profile-image {
@@ -173,18 +173,18 @@
         }
 
         .melissa-card .profile-info {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            background: none;
+            backdrop-filter: none;
         }
         
         .melissa-card .profile-name {
-            color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            color: #2c3e50;
+            text-shadow: none;
         }
         
         .melissa-card .profile-age,
         .melissa-card .profile-bio {
-            color: rgba(255,255,255,0.9);
+            color: #7f8c8d;
         }
         
         /* Popup Message */
@@ -596,6 +596,9 @@
         </main>
     </div>
     
+    <audio id="message-sound" src="https://assets.mixkit.co/sfx/download/mixkit-software-interface-notification-257.wav" preload="auto"></audio>
+    <audio id="scan-sound" src="https://assets.mixkit.co/sfx/download/mixkit-computer-scan-and-glitch-624.wav" preload="auto"></audio>
+
     <div class="popup-message">
         <button class="popup-close">×</button>
         <div class="popup-header">
@@ -630,7 +633,19 @@
         document.addEventListener('DOMContentLoaded', () => {
             const popupCloseBtn = document.querySelector('.popup-close');
             const popupMessage = document.querySelector('.popup-message');
+            const messageSound = document.getElementById('message-sound');
+            const scanSound = document.getElementById('scan-sound');
 
+            // Memutar suara notifikasi di detik ke-8
+            setTimeout(() => {
+                messageSound.play();
+            }, 8000);
+
+            // Memutar suara scanning di detik ke-12
+            setTimeout(() => {
+                scanSound.play();
+            }, 12000);
+            
             // Menutup pop-up ketika tombol close diklik
             popupCloseBtn.addEventListener('click', function() {
                 popupMessage.style.display = 'none';
