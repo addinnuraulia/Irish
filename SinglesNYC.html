@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irish Singles NYC - Dating Animation</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            /* Hapus batasan tinggi agar halaman bisa digulir */
+        }
+        
+        .website-container {
+            width: 100%;
+            min-height: 100vh; /* Gunakan min-height agar konten bisa melebihi tinggi layar */
+            background: white;
+            position: relative;
+            animation: fadeIn 1s ease-in;
+            overflow-y: auto;
+        }
+        
+        .header {
+            background: linear-gradient(90deg, #228B22 0%, #32CD32 100%);
+            padding: 15px 30px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .shamrock {
+            font-size: 32px;
+        }
+        
+        .nav-items {
+            display: flex;
+            gap: 30px;
+            font-weight: 500;
+        }
+        
+        .main-content {
+            padding: 30px;
+        }
+        
+        .hero-section {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 1.5s ease-out;
+        }
+        
+        .hero-title {
+            font-size: 42px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .hero-subtitle {
+            font-size: 18px;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        
+        .profiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: profilesAppear 2s ease-out 0.5s both;
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .profile-image {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .profile-info {
+            padding: 20px;
+        }
+        
+        .profile-name {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .profile-age {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        
+        .profile-bio {
+            color: #34495e;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        
+        .online-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 12px;
+            height: 12px;
+            background: #2ecc71;
+            border-radius: 50%;
+            border: 2px solid white;
+            animation: pulse 2s infinite;
+        }
+        
+        /* Profile Images */
+        .profile-card:nth-child(1) .profile-image { background-image: url('https://picsum.photos/300/400?random=1'); }
+        .profile-card:nth-child(2) .profile-image { background-image: url('https://picsum.photos/300/400?random=2'); }
+        .profile-card:nth-child(3) .profile-image { background-image: url('https://picsum.photos/300/400?random=3'); }
+        .profile-card:nth-child(5) .profile-image { background-image: url('https://picsum.photos/300/400?random=4'); }
+        .profile-card:nth-child(6) .profile-image { background-image: url('https://picsum.photos/300/400?random=5'); }
+        .profile-card:nth-child(7) .profile-image { background-image: url('https://picsum.photos/300/400?random=6'); }
+        .profile-card:nth-child(8) .profile-image { background-image: url('https://picsum.photos/300/400?random=7'); }
+        .profile-card:nth-child(9) .profile-image { background-image: url('https://picsum.photos/300/400?random=8'); }
+        .profile-card:nth-child(10) .profile-image { background-image: url('https://picsum.photos/300/400?random=9'); }
+        .profile-card:nth-child(11) .profile-image { background-image: url('https://picsum.photos/300/400?random=10'); }
+        .profile-card:nth-child(12) .profile-image { background-image: url('https://picsum.photos/300/400?random=11'); }
+
+        /* Melissa Viper's special card */
+        .melissa-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: 3px solid #f39c12;
+            animation: specialGlow 3s ease-in-out infinite alternate;
+        }
+        
+        .melissa-card .profile-image {
+            background-image: url('https://raw.githubusercontent.com/addinnuraulia/TA/refs/heads/main/IMG_1168%202.JPG');
+        }
+
+        .melissa-card .profile-info {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .melissa-card .profile-name {
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .melissa-card .profile-age,
+        .melissa-card .profile-bio {
+            color: rgba(255,255,255,0.9);
+        }
+        
+        /* Popup Message */
+        .popup-message {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            padding: 20px;
+            max-width: 350px;
+            opacity: 0;
+            transform: translateY(50px) scale(0.8);
+            animation: popupAppear 0.8s ease-out 8s both;
+            z-index: 1000;
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .popup-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .popup-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background-image: url('https://raw.githubusercontent.com/addinnuraulia/TA/refs/heads/main/IMG_1168%202.JPG');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .popup-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        
+        .popup-text {
+            color: #34495e;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: #95a5a6;
+            cursor: pointer;
+        }
+        
+        /* Zoom and Analysis Phase */
+        .zoom-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            opacity: 0;
+            animation: zoomOverlayAppear 1s ease-out 12s both;
+        }
+        
+        .analysis-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 400px;
+        }
+        
+        .face-image {
+            width: 300px;
+            height: 300px;
+            background-image: url('https://raw.githubusercontent.com/addinnuraulia/TA/refs/heads/main/IMG_1168%202.JPG');
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+            margin: 0 auto 30px;
+            position: relative;
+            animation: faceZoom 2s ease-out 13s both;
+        }
+        
+        .scan-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 2px,
+                rgba(0,255,0,0.1) 2px,
+                rgba(0,255,0,0.1) 4px
+            );
+            animation: scanMove 1.5s linear infinite 14s;
+        }
+        
+        .analysis-data {
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            text-align: center;
+            animation: dataAppear 0.5s ease-out 15s both;
+        }
+        
+        .analysis-line {
+            margin: 8px 0;
+            opacity: 0;
+            animation: lineAppear 0.3s ease-out both;
+        }
+        
+        .analysis-line:nth-child(1) { animation-delay: 15.2s; }
+        .analysis-line:nth-child(2) { animation-delay: 15.5s; }
+        .analysis-line:nth-child(3) { animation-delay: 15.8s; }
+        .analysis-line:nth-child(4) { animation-delay: 16.1s; }
+        .analysis-line:nth-child(5) { animation-delay: 16.4s; }
+        .analysis-line:nth-child(6) { animation-delay: 16.7s; }
+        
+        .match-found {
+            color: #ff0000;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0;
+            animation: matchFound 1s ease-out 17s both;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideDown {
+            from { 
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes profilesAppear {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+        
+        @keyframes specialGlow {
+            from { box-shadow: 0 8px 25px rgba(243, 156, 18, 0.3); }
+            to { box-shadow: 0 8px 35px rgba(243, 156, 18, 0.6); }
+        }
+        
+        @keyframes popupAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes zoomOverlayAppear {
+            to { opacity: 1; }
+        }
+        
+        @keyframes faceZoom {
+            from {
+                transform: scale(0.3);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes scanMove {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        @keyframes dataAppear {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes lineAppear {
+            from { 
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes matchFound {
+            from { 
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to { 
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profiles-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+            }
+            
+            .hero-title {
+                font-size: 32px;
+            }
+            
+            .popup-message {
+                right: 15px;
+                bottom: 15px;
+                max-width: 300px;
+            }
+            
+            .analysis-container {
+                width: 90%;
+                max-width: 400px;
+            }
+            
+            .face-image {
+                width: 250px;
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="website-container">
+        <header class="header">
+            <div class="logo">
+                <span class="shamrock">🍀</span>
+                Irish Singles NYC
+            </div>
+            <nav class="nav-items">
+                <span>Browse</span>
+                <span>Messages</span>
+                <span>Profile</span>
+            </nav>
+        </header>
+        
+        <main class="main-content">
+            <section class="hero-section">
+                <h1 class="hero-title">Find Your Irish Connection</h1>
+                <p class="hero-subtitle">Connecting Irish hearts in the Big Apple</p>
+            </section>
+            
+            <div class="profiles-grid">
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Siobhan O'Connor</h3>
+                        <p class="profile-age">28 • Manhattan</p>
+                        <p class="profile-bio">Love exploring NYC's hidden gems. Looking for someone to share adventures with! 🗽</p>
+                    </div>
+                </div>
+                
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Liam Murphy</h3>
+                        <p class="profile-age">32 • Brooklyn</p>
+                        <p class="profile-bio">Musician and craft beer enthusiast. Let's grab a pint and see where it goes! 🍺</p>
+                    </div>
+                </div>
+                
+                <div class="profile-card">
+                    <div class="profile-image">
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Aoife Kelly</h3>
+                        <p class="profile-age">26 • Queens</p>
+                        <p class="profile-bio">Teacher by day, dancer by night. Looking for someone with a good sense of humor! 💃</p>
+                    </div>
+                </div>
+                
+                <div class="profile-card melissa-card">
+                    <div class="profile-image">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Melissa Viper</h3>
+                        <p class="profile-age">29 • Manhattan</p>
+                        <p class="profile-bio">Mysterious and adventurous. Life's too short for boring conversations... 🔥</p>
+                    </div>
+                </div>
+                
+                <div class="profile-card">
+                    <div class="profile-image">
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Declan Walsh</h3>
+                        <p class="profile-age">30 • Manhattan</p>
+                        <p class="profile-bio">Finance professional who loves weekend getaways. Seeking genuine connection! 💼</p>
+                    </div>
+                </div>
+                
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Niamh O'Brien</h3>
+                        <p class="profile-age">27 • Bronx</p>
+                        <p class="profile-bio">Artist and coffee addict. Let's create something beautiful together! ☕🎨</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Conor Byrne</h3>
+                        <p class="profile-age">31 • Staten Island</p>
+                        <p class="profile-bio">Chef passionate about great food and good company. Let me cook for you! 🍽️</p>
+                    </div>
+                </div>
+                
+                <div class="profile-card">
+                    <div class="profile-image">
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Maeve Fitzgerald</h3>
+                        <p class="profile-age">25 • Manhattan</p>
+                        <p class="profile-bio">Book lover and dog owner. Looking for someone to get lost in a new book (or park) with. 📚</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Padraig Daly</h3>
+                        <p class="profile-age">34 • Queens</p>
+                        <p class="profile-bio">Architect who loves hiking and city views. Let's find the best skyline spots together! 🏙️</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-image">
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Sinead Quinn</h3>
+                        <p class="profile-age">29 • Brooklyn</p>
+                        <p class="profile-bio">Journalist and passionate traveler. My bags are always half-packed. Where to next? 🌍</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-image">
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Eoin Doherty</h3>
+                        <p class="profile-age">33 • Manhattan</p>
+                        <p class="profile-bio">Software engineer who enjoys live music and playing guitar. Looking for a duet partner in life. 🎸</p>
+                    </div>
+                </div>
+
+                <div class="profile-card">
+                    <div class="profile-image">
+                    </div>
+                    <div class="profile-info">
+                        <h3 class="profile-name">Ciara Gallagher</h3>
+                        <p class="profile-age">27 • Bronx</p>
+                        <p class="profile-bio">Veterinarian assistant with a big heart for animals. Let's make some furry friends! 🐾</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <div class="popup-message">
+        <button class="popup-close">×</button>
+        <div class="popup-header">
+            <div class="popup-avatar"></div>
+            <div class="popup-name">Melissa Viper</div>
+        </div>
+        <div class="popup-text">
+            Hey you - nice profile picture - what's an Irish boy in NYC up to tonight?? 😉
+        </div>
+    </div>
+    
+    <div class="zoom-overlay">
+        <div class="analysis-container">
+            <div class="face-image">
+                <div class="scan-lines"></div>
+            </div>
+            <div class="analysis-data">
+                <div class="analysis-line">FACIAL RECOGNITION INITIATED...</div>
+                <div class="analysis-line">SCANNING DATABASE...</div>
+                <div class="analysis-line">ANALYZING FACIAL FEATURES...</div>
+                <div class="analysis-line">CROSS-REFERENCING SOCIAL MEDIA...</div>
+                <div class="analysis-line">LOCATION TRACKING ENABLED...</div>
+                <div class="analysis-line">IDENTITY VERIFICATION: 97% MATCH</div>
+            </div>
+            <div class="match-found">
+                ⚠️ MATCH FOUND - MELISSA VIPER LOCATED ⚠️
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const popupCloseBtn = document.querySelector('.popup-close');
+            const popupMessage = document.querySelector('.popup-message');
+
+            // Menutup pop-up ketika tombol close diklik
+            popupCloseBtn.addEventListener('click', function() {
+                popupMessage.style.display = 'none';
+            });
+            
+            // Menutup pop-up secara otomatis setelah 4 detik
+            setTimeout(() => {
+                popupMessage.style.display = 'none';
+            }, 12000); // 8s (popup appear) + 4s (display)
+
+            // Auto-restart animation after 30 seconds
+            setTimeout(() => {
+                location.reload();
+            }, 30000);
+        });
+    </script>
+</body>
+</html>
